@@ -7,30 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style id="sharedStyle"></style>
   <style>
-    :root {
-      --dusk: #2c4a6e; --dawn: #f0a05a; --leaf: #3d7a5e;
-      --mist: #8ab4c4; --night: #1a2d3f; --paper: #faf7f2;
-      --ink: #2a2a2a; --danger: #c0392b;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Noto Sans TC', sans-serif; background: var(--paper); color: var(--ink); overflow-x: hidden; }
-
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2.5rem;
-      background: rgba(250,247,242,0.93); backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(44,74,110,0.1);
-    }
-    .nav-brand { font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 700; color: var(--dusk); }
-    .nav-brand span { color: var(--dawn); }
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--dusk); font-size: 0.88rem; font-weight: 500; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--dawn); }
-
     .hero {
       min-height: 100vh;
       background: linear-gradient(160deg, var(--night) 0%, var(--dusk) 55%, #3a6b8a 100%);
@@ -63,104 +41,16 @@
     .stat-num { font-family: 'Space Mono', monospace; font-size: 2.2rem; font-weight: 700; color: var(--dawn); display: block; }
     .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
 
-    section { padding: 5rem 2rem; }
-    .section-wrap { max-width: 1000px; margin: 0 auto; }
-    .section-tag { font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--mist); text-transform: uppercase; margin-bottom: 0.75rem; }
-    .section-title { font-family: 'Noto Serif TC', serif; font-size: clamp(1.6rem,4vw,2.4rem); font-weight: 700; color: var(--dusk); margin-bottom: 1.5rem; line-height: 1.4; }
-    .section-desc { font-size: 0.97rem; color: #555; line-height: 1.9; max-width: 680px; }
-
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1.5rem; margin-top: 3rem; }
-    .info-card { background: #fff; border-radius: 16px; padding: 2rem; border: 1px solid rgba(44,74,110,0.08); box-shadow: 0 2px 16px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s; }
-    .info-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
-    .info-card-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .info-card h3 { font-family: 'Noto Serif TC', serif; font-size: 1.02rem; color: var(--dusk); margin-bottom: 0.75rem; }
-    .info-card p { font-size: 0.87rem; color: #666; line-height: 1.8; }
-
-    #report { background: linear-gradient(135deg,#f0f6fa 0%,var(--paper) 100%); }
-    .form-card { background: #fff; border-radius: 24px; padding: 3rem; margin-top: 3rem; box-shadow: 0 4px 40px rgba(44,74,110,0.1); border: 1px solid rgba(44,74,110,0.08); }
-    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
-    .form-group.full { grid-column: 1 / -1; }
-    label { font-size: 0.85rem; font-weight: 500; color: var(--dusk); }
-    label .req { color: var(--danger); }
-    input, select, textarea { padding: 0.75rem 1rem; border-radius: 10px; border: 1.5px solid #dde5ec; font-family: 'Noto Sans TC', sans-serif; font-size: 0.9rem; color: var(--ink); background: #fafcfe; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
-    input:focus, select:focus, textarea:focus { border-color: var(--mist); box-shadow: 0 0 0 3px rgba(138,180,196,0.2); }
-    textarea { resize: vertical; min-height: 100px; }
-
-    .photo-upload { border: 2px dashed #ccd8e3; border-radius: 12px; padding: 2.5rem; text-align: center; cursor: pointer; transition: all 0.2s; background: #f7fafc; position: relative; }
-    .photo-upload:hover { border-color: var(--mist); background: #eef5f9; }
-    .photo-upload input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; border: none; background: none; padding: 0; width: 100%; height: 100%; }
-    .photo-upload-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
-    .photo-upload p { font-size: 0.87rem; color: #888; }
-    .photo-upload strong { color: var(--dusk); }
-    #preview-container { margin-top: 1rem; display: grid; grid-template-columns: repeat(auto-fill,minmax(100px,1fr)); gap: 0.75rem; }
-    #preview-container img { width: 100%; height: 100px; object-fit: cover; border-radius: 8px; border: 1px solid #dde5ec; }
-
-    .gps-row { display: flex; gap: 1rem; align-items: flex-end; }
-    .gps-row input { flex: 1; }
-    .btn-sm { padding: 0.75rem 1.2rem; border: none; border-radius: 10px; cursor: pointer; font-size: 0.84rem; white-space: nowrap; transition: background 0.2s; font-family: 'Noto Sans TC', sans-serif; color: #fff; }
-    .btn-green { background: var(--leaf); } .btn-green:hover { background: #2d5f48; }
-    .btn-blue  { background: var(--mist); } .btn-blue:hover  { background: #6a9ab0; }
-    .btn-gray  { background: #aaa; }        .btn-gray:hover  { background: #888; }
-
-    .ai-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.5rem; }
-    .method-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.75rem; font-weight: 500; }
-    .ai-loading { display: none; align-items: center; gap: 0.6rem; color: var(--mist); font-size: 0.85rem; margin-top: 0.4rem; }
-    .ai-loading.show { display: flex; }
-    .spinner { width: 16px; height: 16px; border: 2px solid var(--mist); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .ai-result { background: linear-gradient(135deg,#eaf5ee,#e8f4f8); border: 1px solid #b8dcc8; border-radius: 10px; padding: 0.85rem 1.1rem; font-size: 0.87rem; display: none; margin-top: 0.4rem; }
-    .ai-result.show { display: block; }
-
-    .form-submit { margin-top: 2rem; text-align: center; }
-    .btn-submit { padding: 1rem 3rem; background: var(--dusk); color: #fff; border: none; border-radius: 50px; font-size: 1rem; font-weight: 500; cursor: pointer; transition: all 0.25s; font-family: 'Noto Sans TC', sans-serif; box-shadow: 0 4px 20px rgba(44,74,110,0.25); }
-    .btn-submit:hover { background: var(--night); transform: translateY(-2px); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-    #data { background: var(--paper); }
-    .data-controls { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.5rem; margin-top: 2rem; }
-    .data-controls input { flex: 1; min-width: 200px; }
-    .table-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 2px 20px rgba(0,0,0,0.06); border: 1px solid rgba(44,74,110,0.08); }
-    table { width: 100%; border-collapse: collapse; }
-    thead { background: var(--dusk); }
-    thead th { padding: 1rem 1.25rem; text-align: left; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.85); letter-spacing: 0.04em; }
-    tbody tr { border-bottom: 1px solid #eaecef; transition: background 0.15s; }
-    tbody tr:hover { background: #f5f9fc; }
-    tbody tr:last-child { border-bottom: none; }
-    td { padding: 0.9rem 1.25rem; font-size: 0.87rem; color: var(--ink); vertical-align: middle; }
-    .tag { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.73rem; background: #e8f4f8; color: var(--dusk); }
-    .tag.ai { background: #eaf5ee; color: var(--leaf); }
-
-    .toast { position: fixed; bottom: 2rem; right: 2rem; z-index: 200; padding: 1rem 1.5rem; border-radius: 12px; font-size: 0.9rem; font-weight: 500; transform: translateY(100px); opacity: 0; transition: all 0.3s; max-width: 320px; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .toast.success { background: var(--leaf); color: #fff; }
-    .toast.error { background: var(--danger); color: #fff; }
-
-    footer { background: var(--night); color: rgba(255,255,255,0.6); padding: 3rem 2rem; text-align: center; }
-    .footer-brand { font-family: 'Noto Serif TC', serif; font-size: 1.15rem; color: #fff; margin-bottom: 0.75rem; }
-    footer p { font-size: 0.82rem; line-height: 1.8; }
-    .footer-team { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--dawn); margin-top: 1.5rem; letter-spacing: 0.1em; }
-
-    @media (max-width: 640px) {
-      nav { padding: 1rem; } .nav-links { display: none; }
-      .form-grid { grid-template-columns: 1fr; }
-      .form-card { padding: 1.5rem; }
-      .gps-row { flex-direction: column; }
-      .stats-bar { gap: 1.5rem; }
-    }
+    .quick-links { display: grid; grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); gap: 1.5rem; margin-top: 3rem; }
+    .quick-card { background: #fff; border-radius: 16px; padding: 2rem; border: 1px solid rgba(44,74,110,0.08); box-shadow: 0 2px 16px rgba(0,0,0,0.04); transition: transform 0.2s, box-shadow 0.2s; text-decoration: none; display: block; }
+    .quick-card:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.08); }
+    .quick-card-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .quick-card h3 { font-family: 'Noto Serif TC', serif; font-size: 1.02rem; color: var(--dusk); margin-bottom: 0.5rem; }
+    .quick-card p { font-size: 0.85rem; color: #888; line-height: 1.7; }
   </style>
 </head>
 <body>
-
-<nav>
-  <div class="nav-brand">城市飛羽 <span>·</span> 鳥窗殺防治</div>
-  <ul class="nav-links">
-    <li><a href="#about">關於窗殺</a></li>
-    <li><a href="#report">通報事件</a></li>
-    <li><a href="#data">資料庫</a></li>
-    <li><a href="#map">地圖</a></li>
-  </ul>
-</nav>
+<div id="navMount"></div>
 
 <section class="hero">
   <div class="hero-bird">🦅</div>
@@ -168,8 +58,8 @@
   <p class="hero-sub">鳥類撞玻璃是城市中被嚴重忽視的生態威脅。透過系統性的資料收集，我們攜手守護每一隻天空的生命。</p>
   <div class="hero-team">荒野宜蘭親子團一團 — 城市飛羽</div>
   <div class="hero-cta">
-    <a href="#report" class="btn btn-primary">📸 通報窗殺事件</a>
-    <a href="#data" class="btn btn-outline">📊 查看資料庫</a>
+    <a href="report.html" class="btn btn-primary">📸 通報窗殺事件</a>
+    <a href="database.html" class="btn btn-outline">📊 查看資料庫</a>
   </div>
   <div class="scroll-hint"><span>向下探索</span><span class="scroll-arrow">↓</span></div>
 </section>
@@ -181,421 +71,27 @@
   <div class="stat-item"><span class="stat-num">10億+</span><span class="stat-label">全球年估計死亡（隻）</span></div>
 </div>
 
-<section id="about">
-  <div class="section-wrap">
-    <p class="section-tag">了解問題</p>
-    <h2 class="section-title">什麼是鳥窗殺？</h2>
-    <p class="section-desc">鳥窗殺（Bird-Window Strike）是指鳥類飛行時撞擊建築物玻璃窗而受傷或死亡的現象。玻璃反射天空與植物，讓鳥類誤以為是可以飛越的空間，全球每年估計有10億至40億隻鳥因此喪命，是僅次於棲地破壞的第二大人為致鳥死因。</p>
-    <div class="info-grid">
-      <div class="info-card"><div class="info-card-icon">🏙️</div><h3>城市是高風險區域</h3><p>高度透明或反光的建築玻璃，在鳥類遷徙季節格外危險，尤其清晨與黃昏光線低角度時。</p></div>
-      <div class="info-card"><div class="info-card-icon">🦜</div><h3>遷徙鳥最受威脅</h3><p>台灣位於東亞候鳥遷徙路線上，春秋兩季為高峰期。疲憊的候鳥判斷力下降，撞窗風險倍增。</p></div>
-      <div class="info-card"><div class="info-card-icon">🔍</div><h3>資料嚴重不足</h3><p>台灣缺乏系統性的鳥窗殺調查資料，公民科學是填補知識空白、推動政策改變的重要力量。</p></div>
-      <div class="info-card"><div class="info-card-icon">🛡️</div><h3>預防是可行的</h3><p>在玻璃加貼防撞貼紙、使用烏卡鳥型玻璃、外加緩衝網，都可大幅降低鳥窗殺發生率。</p></div>
-    </div>
+<div class="page-wrap">
+  <p class="section-tag">快速導覽</p>
+  <h2 class="section-title">選擇你要前往的功能</h2>
+  <div class="quick-links">
+    <a href="about.html" class="quick-card"><div class="quick-card-icon">🔍</div><h3>關於鳥窗殺</h3><p>了解鳥窗殺的成因、影響與預防方式</p></a>
+    <a href="report.html" class="quick-card"><div class="quick-card-icon">📸</div><h3>通報事件</h3><p>上傳照片、GPS定位、AI辨識鳥類</p></a>
+    <a href="database.html" class="quick-card"><div class="quick-card-icon">📊</div><h3>通報資料庫</h3><p>瀏覽、搜尋所有通報紀錄</p></a>
+    <a href="map.html" class="quick-card"><div class="quick-card-icon">🗺️</div><h3>事件地圖</h3><p>查看事件分佈熱點地圖</p></a>
   </div>
-</section>
+</div>
 
-<section id="report">
-  <div class="section-wrap">
-    <p class="section-tag">公民科學通報</p>
-    <h2 class="section-title">通報鳥窗殺事件</h2>
-    <p class="section-desc">發現鳥類撞窗事件？請填寫以下表單，您的紀錄將成為保護鳥類的重要資料。</p>
-    <div class="form-card">
-      <form id="reportForm" novalidate>
-        <div class="form-group full" style="margin-bottom:1.5rem">
-          <label>事件照片</label>
-          <div class="photo-upload">
-            <input type="file" id="photoInput" accept="image/*" multiple />
-            <div class="photo-upload-icon">📷</div>
-            <p><strong>點擊上傳</strong>或拖曳照片至此</p>
-            <p style="margin-top:0.3rem">支援 JPG、PNG、HEIC，可多張</p>
-          </div>
-          <div id="preview-container"></div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group full">
-            <label>事發位置 <span class="req">*</span></label>
-            <div class="gps-row">
-              <input type="text" id="location" placeholder="地址或地點描述（如：宜蘭市○○路○號）" required />
-              <button type="button" class="btn-sm btn-green" onclick="getGPS()">📍 自動抓取 GPS</button>
-            </div>
-            <input type="hidden" id="lat" />
-            <input type="hidden" id="lng" />
-            <small id="gpsStatus" style="color:var(--mist);font-size:0.78rem;margin-top:0.3rem;display:block"></small>
-          </div>
-          <div class="form-group">
-            <label>事件時間 <span class="req">*</span></label>
-            <input type="datetime-local" id="eventTime" required />
-          </div>
-          <div class="form-group">
-            <label>窗殺類型 <span class="req">*</span></label>
-            <select id="strikeType" required>
-              <option value="">請選擇</option>
-              <option>撞擊後死亡</option><option>撞擊後昏迷</option>
-              <option>撞擊後受傷飛離</option><option>撞擊後恢復飛離</option>
-              <option>僅發現羽毛／痕跡</option><option>其他</option>
-            </select>
-          </div>
-          <div class="form-group full">
-            <label>鳥類名稱 <span class="req">*</span></label>
-            <div class="ai-row">
-              <span class="method-badge" id="methodBadge" style="background:#eaf5ee;color:var(--leaf)">🤖 AI辨識</span>
-              <button type="button" class="btn-sm btn-blue" onclick="triggerAI()">使用 AI 辨識</button>
-              <span style="font-size:0.8rem;color:#bbb">或</span>
-              <button type="button" class="btn-sm btn-gray" onclick="switchManual()">手動輸入</button>
-            </div>
-            <div class="ai-loading" id="aiLoading">
-              <div class="spinner"></div>
-              <span id="aiCountdown">AI 辨識中，剩餘 15 秒...</span>
-            </div>
-            <div class="ai-result" id="aiResult"></div>
-            <input type="text" id="birdSpecies" placeholder="鳥類中文或英文名稱" required style="margin-top:0.5rem" />
-            <input type="hidden" id="identMethod" value="AI" />
-          </div>
-          <div class="form-group">
-            <label>建築物類型</label>
-            <select id="buildingType">
-              <option value="">請選擇</option>
-              <option>住宅</option><option>辦公大樓</option><option>學校</option>
-              <option>商場</option><option>公共建設</option><option>其他</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>玻璃特性</label>
-            <select id="glassType">
-              <option value="">請選擇</option>
-              <option>透明玻璃</option><option>反光玻璃</option><option>磨砂玻璃</option>
-              <option>有防撞貼紙</option><option>不明</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>當時天氣</label>
-            <select id="weather">
-              <option value="">請選擇</option>
-              <option>晴天</option><option>多雲</option><option>陰天</option>
-              <option>雨天</option><option>霧</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>通報者（選填）</label>
-            <input type="text" id="reporter" placeholder="您的姓名或匿名" />
-          </div>
-          <div class="form-group full">
-            <label>其他備註</label>
-            <textarea id="notes" placeholder="其他觀察細節、現場狀況等..."></textarea>
-          </div>
-        </div>
-        <div class="form-submit">
-          <button type="submit" class="btn-submit" id="submitBtn">🕊️ 提交通報</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</section>
-
-<section id="data">
-  <div class="section-wrap">
-    <p class="section-tag">開放資料</p>
-    <h2 class="section-title">通報資料庫</h2>
-    <p class="section-desc">所有通報資料將在去除個人資訊後公開，供研究與教育使用。</p>
-    <div class="data-controls">
-      <input type="text" id="searchInput" placeholder="🔍 搜尋鳥種、地點..." oninput="filterTable()" />
-      <select id="filterType" onchange="filterTable()" style="max-width:180px">
-        <option value="">全部類型</option>
-        <option>撞擊後死亡</option><option>撞擊後昏迷</option>
-        <option>撞擊後受傷飛離</option><option>撞擊後恢復飛離</option>
-      </select>
-      <button class="btn-sm btn-green" onclick="loadRecords()">🔄 重新載入</button>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>時間</th><th>鳥種</th><th>辨識方式</th>
-            <th>地點</th><th>類型</th><th>天氣</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody">
-          <tr><td colspan="7" style="text-align:center;padding:3rem;color:#bbb">載入中...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<section id="map">
-  <div class="section-wrap">
-    <p class="section-tag">空間分佈</p>
-    <h2 class="section-title">事件地圖</h2>
-    <p class="section-desc">整合各通報地點的地理資訊，找出鳥窗殺熱點，協助優先推動防治措施。</p>
-    <div id="leafletMap" style="width:100%;height:480px;border-radius:16px;margin-top:2rem;box-shadow:0 4px 20px rgba(0,0,0,0.1);z-index:1;"></div>
-    <div style="margin-top:1rem;display:flex;gap:1.5rem;flex-wrap:wrap;font-size:0.85rem;color:#555;">
-      <span>🔴 撞擊後死亡</span>
-      <span>🟠 撞擊後昏迷</span>
-      <span>🟡 撞擊後受傷飛離</span>
-      <span>🟢 撞擊後恢復飛離</span>
-      <span>⚪ 其他</span>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="footer-brand">城市飛羽 · 鳥窗殺防治資料庫</div>
-  <p>這個平台由一群關心生態的公民共同建立<br/>每一筆資料，都是守護生命的行動</p>
-  <div class="footer-team">製作團隊：荒野宜蘭親子團一團 — 城市飛羽</div>
-</footer>
-
+<div id="footerMount"></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="js/shared.js"></script>
 <script>
-  // ════════════════════════════════
-  //  ⚙️ 填入你的 Supabase 金鑰
-  // ════════════════════════════════
-  const SUPABASE_URL = 'https://qutbosfzphqkfbnowafc.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1dGJvc2Z6cGhxa2Zibm93YWZjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMTQ2ODAsImV4cCI6MjA4ODg5MDY4MH0.NwJ4yIMu391YJZvs7ccGrRMkoux_U-9NfRS0fCORYZ4';
-  // ════════════════════════════════
+  document.getElementById('sharedStyle').textContent = sharedCSS;
+  renderNav('index.html');
+  renderFooter();
 
-  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  document.getElementById('eventTime').value =
-    new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-
-  // ── GPS ──
-  function getGPS() {
-    const status = document.getElementById('gpsStatus');
-    if (!navigator.geolocation) { status.textContent = '此裝置不支援GPS'; return; }
-    status.textContent = '⏳ 定位中...';
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const { latitude: lat, longitude: lng } = pos.coords;
-        document.getElementById('lat').value = lat.toFixed(6);
-        document.getElementById('lng').value = lng.toFixed(6);
-        if (!document.getElementById('location').value)
-          document.getElementById('location').value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-        status.textContent = `✅ GPS 已取得：${lat.toFixed(5)}, ${lng.toFixed(5)}`;
-      },
-      err => { status.textContent = '⚠️ 定位失敗：' + err.message; }
-    );
-  }
-
-  // ── 照片預覽 ──
-  document.getElementById('photoInput').addEventListener('change', e => {
-    const files = Array.from(e.target.files);
-    const container = document.getElementById('preview-container');
-    container.innerHTML = '';
-    files.forEach(f => {
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(f);
-      container.appendChild(img);
-    });
-  });
-
-  // ── AI 辨識 ──
-  let aiController = null;
-
-  async function triggerAI() {
-    const files = document.getElementById('photoInput').files;
-    if (!files.length) { showToast('請先上傳照片再使用 AI 辨識', 'error'); return; }
-
-    const loading = document.getElementById('aiLoading');
-    const result  = document.getElementById('aiResult');
-    result.classList.remove('show');
-    loading.classList.add('show');
-    loading.innerHTML = '<div class="spinner"></div> <span id="aiCountdown">AI 辨識中，剩餘 15 秒...</span>';
-    setMethod('AI');
-
-    let remaining = 15;
-    const countdownEl = () => document.getElementById('aiCountdown');
-    const countdownTimer = setInterval(() => {
-      remaining--;
-      if (countdownEl()) countdownEl().textContent = `AI 辨識中，剩餘 ${remaining} 秒...`;
-    }, 1000);
-
-    aiController = new AbortController();
-    let isTimeout = false;
-
-    const timeout = setTimeout(() => {
-      isTimeout = true;
-      aiController.abort();
-      clearInterval(countdownTimer);
-      loading.classList.remove('show');
-      result.innerHTML = `⚠️ <strong>AI 辨識逾時（超過15秒）</strong><br/><small style="color:#888">可能原因：圖片檔案太大、網路速度較慢。建議壓縮照片後再試，或直接手動輸入鳥類名稱。</small>`;
-      result.style.color = '#e67e22';
-      result.classList.add('show');
-      setMethod('手動');
-    }, 15000);
-
-    try {
-      if (files[0].size > 10 * 1024 * 1024) {
-        clearTimeout(timeout); clearInterval(countdownTimer);
-        loading.classList.remove('show');
-        result.innerHTML = `⚠️ <strong>照片檔案過大（超過10MB）</strong><br/><small style="color:#888">請壓縮照片後再試。</small>`;
-        result.style.color = '#e67e22';
-        result.classList.add('show');
-        setMethod('手動'); return;
-      }
-
-      const b64 = await toBase64(files[0]);
-      const mime = files[0].type || 'image/jpeg';
-
-      const res = await fetch('/api/identify', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ imageBase64: b64, mimeType: mime }),
-        signal: aiController.signal
-      });
-
-      clearTimeout(timeout); clearInterval(countdownTimer);
-      loading.classList.remove('show');
-
-      if (!res.ok) {
-        const errData = await res.json().catch(() => ({}));
-        const errMsg = errData?.error?.message || `HTTP ${res.status}`;
-        result.innerHTML = `❌ <strong>AI 辨識失敗</strong><br/><small style="color:#888">錯誤原因：${errMsg}${res.status === 429 ? '（已超過免費額度，請稍後再試）' : ''}</small>`;
-        result.style.color = 'var(--danger)';
-        result.classList.add('show');
-        setMethod('手動'); return;
-      }
-
-      const data = await res.json();
-      const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '無法辨識';
-
-      if (text === '無法辨識') {
-        result.innerHTML = `🤖 <strong>AI 無法從照片辨識鳥類</strong><br/><small style="color:#888">請手動輸入鳥類名稱。</small>`;
-        result.style.color = '#888';
-        result.classList.add('show');
-        setMethod('手動');
-      } else {
-        document.getElementById('birdSpecies').value = text;
-        result.innerHTML = `✅ <strong>AI 辨識成功：${text}</strong><br/><small style="color:#888">若辨識結果有誤，可直接修改下方欄位。</small>`;
-        result.style.color = 'var(--leaf)';
-        result.classList.add('show');
-      }
-    } catch (err) {
-      clearTimeout(timeout); clearInterval(countdownTimer);
-      loading.classList.remove('show');
-      if (err.name === 'AbortError' && isTimeout) return;
-      result.innerHTML = `❌ <strong>AI 辨識發生錯誤</strong><br/><small style="color:#888">${err.message}</small>`;
-      result.style.color = 'var(--danger)';
-      result.classList.add('show');
-      setMethod('手動');
-    }
-  }
-
-  function switchManual() {
-    setMethod('手動');
-    document.getElementById('aiResult').classList.remove('show');
-    document.getElementById('birdSpecies').focus();
-  }
-
-  function setMethod(mode) {
-    document.getElementById('identMethod').value = mode;
-    const b = document.getElementById('methodBadge');
-    if (mode === 'AI') { b.textContent = '🤖 AI辨識'; b.style.background = '#eaf5ee'; b.style.color = 'var(--leaf)'; }
-    else               { b.textContent = '✏️ 手動輸入'; b.style.background = '#f0eaff'; b.style.color = '#6b4fa0'; }
-  }
-
-  function toBase64(file) {
-    return new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result.split(',')[1]);
-      r.onerror = rej;
-      r.readAsDataURL(file);
-    });
-  }
-
-  // ── 提交表單 ──
-  document.getElementById('reportForm').addEventListener('submit', async e => {
-    e.preventDefault();
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.textContent = '提交中...';
-
-    try {
-      const files = Array.from(document.getElementById('photoInput').files);
-      const photoUrls = [];
-      for (const file of files) {
-        const path = `strikes/${Date.now()}_${file.name.replace(/\s/g,'_')}`;
-        const { error } = await sb.storage.from('bird-photos').upload(path, file);
-        if (!error) {
-          const { data } = sb.storage.from('bird-photos').getPublicUrl(path);
-          photoUrls.push(data.publicUrl);
-        }
-      }
-
-      const { error } = await sb.from('bird_strikes').insert([{
-        event_time:    document.getElementById('eventTime').value,
-        location:      document.getElementById('location').value,
-        latitude:      parseFloat(document.getElementById('lat').value) || null,
-        longitude:     parseFloat(document.getElementById('lng').value) || null,
-        strike_type:   document.getElementById('strikeType').value,
-        bird_species:  document.getElementById('birdSpecies').value,
-        ident_method:  document.getElementById('identMethod').value,
-        building_type: document.getElementById('buildingType').value,
-        glass_type:    document.getElementById('glassType').value,
-        weather:       document.getElementById('weather').value,
-        reporter:      document.getElementById('reporter').value,
-        notes:         document.getElementById('notes').value,
-        photos:        photoUrls,
-      }]);
-
-      if (error) throw error;
-      showToast('✅ 通報成功！感謝您的貢獻', 'success');
-      document.getElementById('reportForm').reset();
-      document.getElementById('preview-container').innerHTML = '';
-      document.getElementById('aiResult').classList.remove('show');
-      document.getElementById('eventTime').value =
-        new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-
-      // 通報成功後同步更新資料庫、統計、地圖
-      loadRecords(); updateStats(); refreshMap();
-
-    } catch (err) {
-      showToast('❌ 提交失敗：' + err.message, 'error');
-    } finally {
-      btn.disabled = false; btn.textContent = '🕊️ 提交通報';
-    }
-  });
-
-  // ── 資料庫 ──
-  let allRecords = [];
-  async function loadRecords() {
-    const { data, error } = await sb.from('bird_strikes').select('*')
-      .order('event_time', { ascending: false }).limit(200);
-    if (!error && data) { allRecords = data; renderTable(data); }
-    else document.getElementById('tableBody').innerHTML =
-      '<tr><td colspan="7" style="text-align:center;padding:2.5rem;color:#bbb">尚無資料或無法連線</td></tr>';
-  }
-
-  function renderTable(records) {
-    const body = document.getElementById('tableBody');
-    if (!records.length) {
-      body.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:#bbb">無符合條件的資料</td></tr>';
-      return;
-    }
-    body.innerHTML = records.map((r, i) => `
-      <tr>
-        <td>${i+1}</td>
-        <td>${r.event_time ? r.event_time.slice(0,16).replace('T',' ') : '—'}</td>
-        <td><strong>${r.bird_species || '—'}</strong></td>
-        <td><span class="tag ${r.ident_method==='AI'?'ai':''}">${r.ident_method||'—'}</span></td>
-        <td>${r.location||'—'}</td>
-        <td>${r.strike_type||'—'}</td>
-        <td>${r.weather||'—'}</td>
-      </tr>`).join('');
-  }
-
-  function filterTable() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    const t = document.getElementById('filterType').value;
-    renderTable(allRecords.filter(r =>
-      (!q || (r.bird_species||'').toLowerCase().includes(q) || (r.location||'').toLowerCase().includes(q)) &&
-      (!t || r.strike_type === t)
-    ));
-  }
-
-  // ── 統計 ──
   async function updateStats() {
     const { count: total } = await sb.from('bird_strikes').select('*', { count:'exact', head:true });
     const { data: sp } = await sb.from('bird_strikes').select('bird_species').not('bird_species','is',null);
@@ -616,77 +112,7 @@
     }, 30);
   }
 
-  // ── Toast ──
-  function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.className = `toast ${type} show`;
-    setTimeout(() => t.classList.remove('show'), 4000);
-  }
-
-  // ── 地圖 ──
-  let leafletMap = null;
-
-  async function initLeafletMap() {
-    const mapEl = document.getElementById('leafletMap');
-    if (!mapEl) return;
-
-    leafletMap = L.map('leafletMap').setView([24.7021, 121.7377], 13);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
-    }).addTo(leafletMap);
-
-    await refreshMap();
-  }
-
-  async function refreshMap() {
-    if (!leafletMap) return;
-
-    // 清除所有現有標記
-    leafletMap.eachLayer(layer => {
-      if (layer instanceof L.CircleMarker) leafletMap.removeLayer(layer);
-    });
-
-    const colorMap = {
-      '撞擊後死亡':     '#e74c3c',
-      '撞擊後昏迷':     '#e67e22',
-      '撞擊後受傷飛離': '#f1c40f',
-      '撞擊後恢復飛離': '#2ecc71',
-    };
-
-    const { data, error } = await sb.from('bird_strikes')
-      .select('latitude, longitude, bird_species, strike_type, event_time, location')
-      .not('latitude', 'is', null)
-      .not('longitude', 'is', null);
-
-    if (error || !data || !data.length) return;
-
-    const bounds = [];
-    data.forEach(r => {
-      const color = colorMap[r.strike_type] || '#95a5a6';
-      const marker = L.circleMarker([r.latitude, r.longitude], {
-        radius: 10, fillColor: color, fillOpacity: 0.85,
-        color: '#ffffff', weight: 2
-      }).addTo(leafletMap);
-      marker.bindPopup(`
-        <div style="font-family:'Noto Sans TC',sans-serif;min-width:180px;line-height:1.8">
-          <div style="font-size:1rem;font-weight:700;color:#2c4a6e;margin-bottom:0.4rem">🐦 ${r.bird_species||'未知鳥種'}</div>
-          <div style="font-size:0.82rem;color:#555">
-            <div>📍 ${r.location||'未填寫'}</div>
-            <div>⚠️ ${r.strike_type||'未填寫'}</div>
-            <div>🕐 ${r.event_time ? r.event_time.slice(0,16).replace('T',' ') : '未填寫'}</div>
-          </div>
-        </div>`);
-      bounds.push([r.latitude, r.longitude]);
-    });
-
-    if (bounds.length > 0) leafletMap.fitBounds(bounds, { padding: [40, 40] });
-  }
-
-  // ── 初始化 ──
-  loadRecords();
   updateStats();
-  initLeafletMap();
 </script>
 </body>
 </html>
