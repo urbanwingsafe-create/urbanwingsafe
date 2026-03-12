@@ -9,13 +9,14 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── 導覽列 ──
 function renderNav(activePage) {
-  const pages = [
-    { href: 'index.html',    label: '首頁' },
-    { href: 'about.html',    label: '關於窗殺' },
-    { href: 'report.html',   label: '通報事件' },
-    { href: 'database.html', label: '資料庫' },
-    { href: 'map.html',      label: '事件地圖' },
-  ];
+const pages = [
+  { href: 'index.html',    label: '首頁' },
+  { href: 'about.html',    label: '關於窗殺' },
+  { href: 'report.html',   label: '通報事件' },
+  { href: 'database.html', label: '資料庫' },
+  { href: 'map.html',      label: '事件地圖' },
+  { href: 'team.html',     label: '團隊介紹' },  // ← 新增這行
+];
   const links = pages.map(p => `
     <li><a href="${p.href}" ${p.href === activePage ? 'class="active"' : ''}>${p.label}</a></li>
   `).join('');
