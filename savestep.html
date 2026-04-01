@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>救傷指南 · 城市飛羽</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style id="sharedStyle"></style>
+  <style>
+    /* ── 頁首 Banner ── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--leaf) 0%, #2c6b4a 60%, var(--dusk) 100%);
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 40%, rgba(240,160,90,0.15) 0%, transparent 55%);
+    }
+    .page-hero-icon { font-size: 4rem; margin-bottom: 1rem; filter: drop-shadow(0 0 20px rgba(255,255,255,0.3)); }
+    .page-hero h1 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: #fff; font-weight: 700; margin-bottom: 0.75rem; position: relative;
+    }
+    .page-hero h1 em { color: var(--dawn); font-style: normal; }
+    .page-hero p { color: rgba(255,255,255,0.75); font-size: 1rem; line-height: 1.9; max-width: 560px; margin: 0 auto; position: relative; }
+
+    /* ── 緊急提示條 ── */
+    .alert-bar {
+      background: #c0392b;
+      color: #fff;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .alert-bar a {
+      color: #ffe4b5;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
+    /* ── 步驟區塊 ── */
+    .steps-container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 5rem 2rem 2rem;
+    }
+
+    .step-card {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem 2.2rem;
+      border: 1px solid rgba(44,74,110,0.08);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      align-items: flex-start;
+    }
+    .step-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.09);
+    }
+    .step-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      border-radius: 20px 0 0 20px;
+      background: var(--leaf);
+    }
+    .step-card.danger::before { background: #c0392b; }
+    .step-card.warning::before { background: var(--dawn); }
+    .step-card.info::before { background: var(--mist); }
+
+    .step-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--leaf);
+      min-width: 2.5rem;
+      line-height: 1;
+      margin-top: 0.25rem;
+    }
+    .step-card.danger .step-num { color: #c0392b; }
+    .step-card.warning .step-num { color: var(--dawn); }
+    .step-card.info .step-num { color: var(--mist); }
+
+    .step-body { flex: 1; }
+    .step-icon { font-size: 1.6rem; margin-bottom: 0.5rem; }
+    .step-title {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--dusk);
+      margin-bottom: 0.6rem;
+    }
+    .step-desc {
+      font-size: 0.92rem;
+      color: #555;
+      line-height: 1.85;
+    }
+    .step-desc strong { color: var(--ink); font-weight: 600; }
+
+    .step-tips {
+      margin-top: 1rem;
+      background: var(--paper);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      border-left: 3px solid var(--leaf);
+    }
+    .step-card.danger .step-tips { border-left-color: #c0392b; }
+    .step-card.warning .step-tips { border-left-color: var(--dawn); }
+    .step-tips-title {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.1em;
+      color: var(--mist);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .step-tips ul {
+      list-style: none;
+      padding: 0;
+    }
+    .step-tips li {
+      font-size: 0.88rem;
+      color: #555;
+      padding: 0.2rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+      line-height: 1.7;
+    }
+    .step-tips li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--leaf);
+      font-size: 0.8rem;
+    }
+    .step-card.danger .step-tips li::before { color: #c0392b; }
+
+    /* ── 章節標題 ── */
+    .section-divider {
+      max-width: 860px;
+      margin: 3rem auto 0.5rem;
+      padding: 0 2rem;
+    }
+
+    /* ── 禁止事項 ── */
+    .dont-grid {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1rem 2rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+    }
+    .dont-card {
+      background: #fff5f5;
+      border: 1px solid rgba(192,57,43,0.18);
+      border-radius: 14px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .dont-x {
+      font-size: 1.4rem;
+      color: #c0392b;
+      font-weight: 700;
+      min-width: 1.6rem;
+      font-family: 'Space Mono', monospace;
+    }
+    .dont-text {
+      font-size: 0.88rem;
+      color: #555;
+      line-height: 1.75;
+    }
+    .dont-text strong { color: #c0392b; }
+
+    /* ── 聯絡資源 ── */
+    .resource-grid {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 1rem 2rem 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .resource-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 1.8rem;
+      border: 1px solid rgba(44,74,110,0.1);
+      box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+      text-align: center;
+    }
+    .resource-card-icon { font-size: 2.2rem; margin-bottom: 0.8rem; }
+    .resource-card h4 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1rem;
+      color: var(--dusk);
+      margin-bottom: 0.4rem;
+    }
+    .resource-card p { font-size: 0.84rem; color: #777; line-height: 1.7; }
+    .resource-card a {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.84rem;
+      color: var(--leaf);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .resource-card a:hover { text-decoration: underline; }
+
+    /* ── 通報按鈕區 ── */
+    .cta-section {
+      max-width: 860px;
+      margin: 4rem auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+    .cta-box {
+      background: linear-gradient(135deg, var(--dusk), #1a3a5a);
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      color: #fff;
+    }
+    .cta-box h3 {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 1.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .cta-box p { color: rgba(255,255,255,0.7); font-size: 0.9rem; margin-bottom: 1.8rem; line-height: 1.8; }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.9rem 2rem;
+      background: var(--dawn);
+      color: var(--night);
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      text-decoration: none;
+      font-family: 'Noto Sans TC', sans-serif;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(240,160,90,0.35);
+    }
+    .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(240,160,90,0.5); }
+
+    @media (max-width: 640px) {
+      .step-card { flex-direction: column; gap: 1rem; padding: 1.5rem; }
+      .step-num { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="navMount"></div>
+
+<!-- 頁首 -->
+<section class="page-hero">
+  <div class="page-hero-icon">🩹</div>
+  <h1>發現傷鳥，<em>不要慌</em></h1>
+  <p>正確的第一步，能大幅提高鳥兒的存活機會。請依照以下步驟冷靜處置，並盡速聯繫專業救傷單位。</p>
+</section>
+
+<!-- 緊急提示 -->
+<div class="alert-bar">
+  ⚠️ 緊急狀況請直接聯繫：
+  <strong>特有生物研究保育中心</strong>04-2339-1670 ｜
+  <strong>各縣市野生動物保育主管機關</strong>
+</div>
+
+<!-- 步驟 -->
+<div class="steps-container">
+  <p class="section-tag">Step by Step</p>
+  <h2 class="section-title">傷鳥救傷步驟</h2>
+  <p class="section-desc">當鳥兒因撞窗而受傷，每一分鐘都很珍貴。請依順序進行，避免二次傷害。</p>
+
+  <!-- Step 1 -->
+  <div class="step-card danger">
+    <div class="step-num">01</div>
+    <div class="step-body">
+      <div class="step-icon">🔍</div>
+      <div class="step-title">先觀察，不要急著觸碰</div>
+      <div class="step-desc">
+        發現鳥兒後，<strong>先在原地靜觀 3–5 分鐘</strong>。部分輕微撞擊的鳥兒只是短暫暈眩，稍作休息即可自行飛走。貿然抓取反而會造成額外壓力與傷害。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">判斷需要介入的情況</div>
+        <ul>
+          <li>超過 5 分鐘仍無法站立或眼神呆滯</li>
+          <li>明顯出血、翅膀下垂或姿勢異常</li>
+          <li>所在位置有貓狗或車輛等立即危險</li>
+          <li>天氣過熱或過冷，環境不安全</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step-card warning">
+    <div class="step-num">02</div>
+    <div class="step-body">
+      <div class="step-icon">🧤</div>
+      <div class="step-title">戴手套或用布巾保護雙手</div>
+      <div class="step-desc">
+        確認需要介入後，<strong>避免直接用裸手抓握鳥兒</strong>。鳥類可能帶有寄生蟲或病原體，且鷹類、鷺鷥等大型鳥的爪喙具有一定傷害力。準備薄布手套或一條乾淨毛巾。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">注意事項</div>
+        <ul>
+          <li>使用棉質毛巾優於橡膠手套，鳥兒較不易滑落</li>
+          <li>動作要輕柔而穩定，避免突然大動作</li>
+          <li>勿遮住鳥的頭部，以免引起恐慌</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step-card">
+    <div class="step-num">03</div>
+    <div class="step-body">
+      <div class="step-icon">📦</div>
+      <div class="step-title">輕柔包裹，放入通風紙箱</div>
+      <div class="step-desc">
+        用毛巾將鳥兒輕輕包裹固定（翅膀貼近身體），放入<strong>有蓋且打孔的紙箱</strong>中。紙箱底部鋪一層乾燥報紙或廚房紙巾。紙箱優於塑膠容器，因其可吸收排泄物且不易滑。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">放置要領</div>
+        <ul>
+          <li>紙箱大小：讓鳥兒可以站立但不能飛撲即可</li>
+          <li>在側面或上蓋戳數個小洞確保空氣流通</li>
+          <li>不要在箱內放置水或食物——錯誤的食物可能致命</li>
+          <li>不要墊棉花，羽毛容易纏繞受傷</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step-card info">
+    <div class="step-num">04</div>
+    <div class="step-body">
+      <div class="step-icon">🌡️</div>
+      <div class="step-title">保溫、置暗、保持安靜</div>
+      <div class="step-desc">
+        將紙箱放置於<strong>安靜、陰暗、溫暖</strong>的環境中（室溫 25–28°C 為佳）。黑暗有助於降低鳥兒的緊張程度，減少體力消耗。避免頻繁打開箱子查看。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">保溫方式</div>
+        <ul>
+          <li>天冷時可在紙箱旁（非箱內）放置暖暖包，隔布保溫</li>
+          <li>不可使用吹風機、直射燈泡等高溫熱源</li>
+          <li>避免將箱子放在冷氣或風扇直吹處</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="step-card">
+    <div class="step-num">05</div>
+    <div class="step-body">
+      <div class="step-icon">📞</div>
+      <div class="step-title">立即聯繫專業救傷單位</div>
+      <div class="step-desc">
+        安置好鳥兒後，<strong>盡快聯繫野生動物救傷機構</strong>。請告知發現地點、鳥兒的大致種類（如不確定可拍照）、目前狀況與自身位置，等候後續指示。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">聯繫時準備的資訊</div>
+        <ul>
+          <li>發現時間與地點（地址或 GPS 座標）</li>
+          <li>鳥兒的大小、外觀特徵或照片</li>
+          <li>受傷狀況描述（出血、骨折疑似部位等）</li>
+          <li>你所在的縣市，以利轉介最近的救傷站</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="step-card">
+    <div class="step-num">06</div>
+    <div class="step-body">
+      <div class="step-icon">🚗</div>
+      <div class="step-title">依指示送交或等待接送</div>
+      <div class="step-desc">
+        確認送交地點後，<strong>盡速將紙箱送往指定救傷站</strong>。運送途中保持車廂安靜，不要打開箱子。抵達後如實告知救傷人員所有觀察到的狀況，協助後續治療。
+      </div>
+      <div class="step-tips">
+        <div class="step-tips-title">運送注意</div>
+        <ul>
+          <li>行車時將紙箱置於不易滾動的位置（座位井或車廂地板）</li>
+          <li>全程避免播放音樂或大聲說話</li>
+          <li>勿讓寵物或孩童靠近紙箱</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 禁止事項 -->
+<div class="section-divider">
+  <p class="section-tag">⚠️ 常見錯誤</p>
+  <h2 class="section-title">這些事情千萬不要做</h2>
+</div>
+<div class="dont-grid">
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要強迫餵食或餵水</strong><br/>人類食物、麵包屑、牛奶都可能致命，連餵水也需要技巧，請交給專業人員。</div>
+  </div>
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要讓孩子或寵物靠近</strong><br/>受驚鳥兒的掙扎會加重傷勢，貓狗的氣味也會造成極大壓力。</div>
+  </div>
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要自行嘗試固定骨折</strong><br/>錯誤的固定方式會造成更嚴重的二次傷害，骨折處理需由獸醫執行。</div>
+  </div>
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要長期自行飼養</strong><br/>台灣野生鳥類受法律保護，非必要情況下私自飼養屬違法行為，應盡快移交救傷單位。</div>
+  </div>
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要放在太陽直射或密封環境</strong><br/>過熱或缺氧都可能在短時間內造成死亡。</div>
+  </div>
+  <div class="dont-card">
+    <div class="dont-x">✕</div>
+    <div class="dont-text"><strong>不要頻繁打開箱子拍照</strong><br/>每一次的光線與聲音刺激都會消耗鳥兒寶貴的體力，拍照留存基本資訊即可。</div>
+  </div>
+</div>
+
+<!-- 聯絡資源 -->
+<div class="section-divider" style="margin-top:4rem;">
+  <p class="section-tag">🌿 專業資源</p>
+  <h2 class="section-title">台灣野鳥救傷聯繫管道</h2>
+</div>
+<div class="resource-grid">
+  <div class="resource-card">
+    <div class="resource-card-icon">🏛️</div>
+    <h4>特有生物研究保育中心</h4>
+    <p>農業部所屬機關，提供全台野生動物救傷諮詢與轉介服務。</p>
+    <a href="tel:049-2761331">049-276-1331</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-card-icon">🦜</div>
+    <h4>台灣各縣市野鳥學會</h4>
+    <p>各地鳥會通常有傷鳥救傷志工網絡，可協助就近處置或轉介。</p>
+    <a href="https://www.bird.org.tw/" target="_blank" rel="noopener">中華民國野鳥學會 →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-card-icon">🏥</div>
+    <h4>縣市野生動物救傷站</h4>
+    <p>各縣市農業局（處）皆設有野生動物救傷聯繫窗口，可撥打1999或洽詢當地農業主管機關。</p>
+    <a href="https://www.coa.gov.tw/" target="_blank" rel="noopener">農業部官網 →</a>
+  </div>
+  <div class="resource-card">
+    <div class="resource-card-icon">🌐</div>
+    <h4>宜蘭縣野鳥學會</h4>
+    <p>本團所在地，歡迎宜蘭鄉親優先聯繫，提供在地救傷協助。</p>
+    <a href="https://www.facebook.com/yilanbird/" target="_blank" rel="noopener">Facebook 粉絲頁 →</a>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-box">
+    <h3>救援結束後，記得通報記錄 🙏</h3>
+    <p>每一筆窗殺紀錄都是守護鳥類的重要資料<br/>請協助我們通報事件地點，讓更多人了解危險窗戶的位置</p>
+    <a href="report.html" class="btn-cta">📸 前往通報事件</a>
+  </div>
+</div>
+
+<div id="footerMount"></div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/shared.js"></script>
+<script>
+  document.getElementById('sharedStyle').textContent = sharedCSS;
+  renderNav('savestep.html');
+  renderFooter();
+</script>
+</body>
+</html>
